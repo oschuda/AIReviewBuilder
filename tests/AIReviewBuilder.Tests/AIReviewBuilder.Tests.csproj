@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!--
+      Test-only analyzer relaxations. Warnings remain errors; these specific rules
+      target production API/naming conventions that do not apply to xUnit test code:
+        CA1707 - underscores in test method names (xUnit convention)
+        CA1720 - parameter names that contain a type name (test parameters)
+        CA1859 - prefer concrete return types (tests intentionally use interfaces)
+        CA1861 - constant array arguments (acceptable in one-off assertions)
+    -->
+    <NoWarn>$(NoWarn);CA1707;CA1720;CA1859;CA1861</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AIReviewBuilder.Domain\AIReviewBuilder.Domain.csproj" />
+    <ProjectReference Include="..\..\src\AIReviewBuilder.Application\AIReviewBuilder.Application.csproj" />
+    <ProjectReference Include="..\..\src\AIReviewBuilder.Infrastructure\AIReviewBuilder.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

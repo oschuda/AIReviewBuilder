@@ -1,0 +1,58 @@
+name: CI
+
+# GLOBAL ENGINEERING STANDARD §27: CI/CD is part of the trusted supply chain and
+# must fail on build, analyzer, or test violations (warnings are treated as errors).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+jobs:
+  cross-platform:
+    name: Build & test cross-platform layers (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Restore
+        run: |
+          dotnet restore src/AIReviewBuilder.Domain/AIReviewBuilder.Domain.csproj
+          dotnet restore src/AIReviewBuilder.Application/AIReviewBuilder.Application.csproj
+          dotnet restore src/AIReviewBuilder.Infrastructure/AIReviewBuilder.Infrastructure.csproj
+          dotnet restore tests/AIReviewBuilder.Tests/AIReviewBuilder.Tests.csproj
+
+      - name: Build (Release, warnings-as-errors)
+        run: |
+          dotnet build src/AIReviewBuilder.Infrastructure/AIReviewBuilder.Infrastructure.csproj -c Release --no-restore
+          dotnet build tests/AIReviewBuilder.Tests/AIReviewBuilder.Tests.csproj -c Release --no-restore
+
+      - name: Test
+        run: dotnet test tests/AIReviewBuilder.Tests/AIReviewBuilder.Tests.csproj -c Release --no-build
+
+  windows-ui:
+    name: Build full solution incl. WPF UI (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - name: Build solution (Release, warnings-as-errors)
+        run: dotnet build AIReviewBuilder.sln -c Release

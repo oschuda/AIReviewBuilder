@@ -1,0 +1,36 @@
+<Project>
+
+  <!--
+    Central Package Management (GLOBAL ENGINEERING STANDARD §13 Supply Chain Security).
+    All NuGet versions are pinned here. Floating versions are forbidden.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- UI: MVVM source generators (CommunityToolkit.Mvvm) -->
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+
+    <!-- Structured logging (§17 Observability) -->
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+
+    <!-- Dependency injection composition root -->
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+
+    <!-- UI host: logging implementation -->
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Test">
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+</Project>

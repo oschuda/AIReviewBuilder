@@ -1,0 +1,29 @@
+<Project>
+
+  <!--
+    Global build configuration for all projects in the AI Review Builder solution.
+    Enforces GLOBAL ENGINEERING STANDARD v1.1.0:
+      §8  Determinism & culture-invariant builds
+      §13 Supply chain (central, pinned package versions via Directory.Packages.props)
+      §16 No suppression of compiler warnings for convenience (warnings = errors)
+      §27 CI/CD must fail on violations
+  -->
+
+  <PropertyGroup>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <Deterministic>true</Deterministic>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- GLOBAL_STANDARD_VERSION per §36 -->
+    <GlobalStandardVersion>1.1.0</GlobalStandardVersion>
+  </PropertyGroup>
+
+</Project>

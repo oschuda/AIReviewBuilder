@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Presentation layer (WPF + MVVM via CommunityToolkit.Mvvm source generators).
+
+    DEVIATION (ADR-0001, docs/adr/0001-net9-wpf-deviation.md):
+      * Runtime target is net9.0-windows (STS), not .NET 8 LTS (§7 GLOBAL STANDARD).
+      * WPF requires the Windows Desktop SDK and therefore only compiles on Windows.
+        It cannot be built on the Linux CI used for the cross-platform layers.
+    The UI layer is intentionally thin: it contains NO domain, validation, or security
+    logic (§6 UI Architecture Patterns). All such logic lives in Domain/Application/
+    Infrastructure, which are fully built and tested on Linux.
+  -->
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>AIReviewBuilder.UI</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AIReviewBuilder.Domain\AIReviewBuilder.Domain.csproj" />
+    <ProjectReference Include="..\AIReviewBuilder.Application\AIReviewBuilder.Application.csproj" />
+    <ProjectReference Include="..\AIReviewBuilder.Infrastructure\AIReviewBuilder.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
