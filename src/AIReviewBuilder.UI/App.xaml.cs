@@ -13,7 +13,7 @@ namespace AIReviewBuilder.UI;
 /// container (Application + Infrastructure services via <see cref="ServiceCollectionExtensions"/>)
 /// and resolves the main window. The UI layer holds no domain logic (§6).
 /// </summary>
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private ServiceProvider? _services;
 
