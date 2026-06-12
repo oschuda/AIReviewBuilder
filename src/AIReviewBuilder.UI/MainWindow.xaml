@@ -1,0 +1,104 @@
+<Window x:Class="AIReviewBuilder.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AIReviewBuilder.UI.ViewModels"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="AI Review Builder" Height="640" Width="940"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Repository + output paths -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Repository:" VerticalAlignment="Center" Margin="0,0,8,8" />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="0,0,8,8"
+                     Text="{Binding RepositoryRootPath, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="0" Grid.Column="2" Content="Browse…" Margin="0,0,0,8" Padding="12,4"
+                    Command="{Binding BrowseRepositoryCommand}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Output:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,8,0"
+                     Text="{Binding OutputDirectoryPath, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Row="1" Grid.Column="2" Content="Browse…" Padding="12,4"
+                    Command="{Binding BrowseOutputCommand}" />
+        </Grid>
+
+        <!-- Profile + options -->
+        <Grid Grid.Row="1" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="260" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="Profile:" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}"
+                      DisplayMemberPath="Name" />
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="16,0,0,0">
+                <CheckBox Content="Generate review.md" IsChecked="{Binding GenerateMarkdown}" Margin="0,0,16,0" VerticalAlignment="Center" />
+                <CheckBox Content="Generate source bundle" IsChecked="{Binding GenerateSourceBundle}" Margin="0,0,16,0" VerticalAlignment="Center" />
+                <CheckBox Content="Include file contents" IsChecked="{Binding IncludeFileContents}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Action buttons + metrics -->
+        <Grid Grid.Row="2" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Content="Load Profiles" Padding="12,6" Margin="0,0,8,0"
+                    Command="{Binding LoadProfilesCommand}" />
+            <Button Grid.Column="1" Content="Scan" Padding="12,6" Margin="0,0,8,0"
+                    Command="{Binding ScanCommand}" />
+            <Button Grid.Column="2" Content="Build" Padding="12,6"
+                    Command="{Binding BuildCommand}" />
+
+            <TextBlock Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Run Text="Files: " /><Run Text="{Binding FileCount, Mode=OneWay}" FontWeight="Bold" />
+                <Run Text="   Bytes: " /><Run Text="{Binding TotalBytes, Mode=OneWay}" FontWeight="Bold" />
+                <Run Text="   ~Tokens: " /><Run Text="{Binding ApproximateTokens, Mode=OneWay}" FontWeight="Bold" />
+            </TextBlock>
+        </Grid>
+
+        <!-- Scanned files -->
+        <DataGrid Grid.Row="3" Margin="0,16,0,0" ItemsSource="{Binding ScannedFiles}"
+                  AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="File" Binding="{Binding RelativePath}" Width="*" />
+                <DataGridTextColumn Header="Lines" Binding="{Binding Metrics.LineCount}" Width="90" />
+                <DataGridTextColumn Header="Bytes" Binding="{Binding Metrics.ByteCount}" Width="110" />
+                <DataGridTextColumn Header="~Tokens" Binding="{Binding Metrics.ApproximateTokenCount}" Width="110" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Status bar -->
+        <Border Grid.Row="4" Margin="0,12,0,0" Padding="8,6" Background="#F0F0F0" CornerRadius="4">
+            <TextBlock Text="{Binding StatusMessage}" TextTrimming="CharacterEllipsis" />
+        </Border>
+    </Grid>
+</Window>

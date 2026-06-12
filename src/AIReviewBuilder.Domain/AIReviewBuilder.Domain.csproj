@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Domain layer. Pure domain logic and invariants (§25 Domain Model Integrity).
+    MUST NOT depend on any infrastructure, UI, or third-party package (Clean Architecture §1/§3).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>AIReviewBuilder.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>
